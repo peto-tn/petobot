@@ -8,6 +8,6 @@
 #   hubot die - End hubot process
 
 module.exports = (robot) ->
-  robot.respond /ぬるぽ$/i, (msg) ->
+  robot.hear /ぬるぽ$/i, (msg) ->
     msg.send "ガッ"
 
