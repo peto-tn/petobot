@@ -14,42 +14,46 @@ module.exports = (robot) ->
 
   removeLunchMenu = (name) =>
     lunchMenus = getLunchMenus()
-    if 'lunchMenus[name] != null'
-      lunchMenus.remove(name)
+    if lunchMenus[name] != undefined
+      delete lunchMenus[name]
       robot.brain.set KEY_LUNCH_MENU,lunchMenus 
       return "remove: #{name}"
     else
       return "no exist"
 
-  robot.hear /list lunch menu/i, (msg) ->
+  robot.hear /list lunch/i, (msg) ->
     lunchMenus = getLunchMenus()
     console.log lunchMenus 
     for name, rate of lunchMenus 
       msg.send "#{name}: #{rate}"
 
-  robot.hear /^add lunch menu (.+) ([0-9]+)$/i, (msg) ->
+  robot.hear /^set lunch (.+) ([0-9]+)$/i, (msg) ->
     name = msg.match[1]
     rate = msg.match[2]
     result = setLunchMenu(name, rate)
     msg.send "#{result}"
 
-  robot.hear /^remove lunch menu (.+)$/i, (msg) ->
+  robot.hear /^rm lunch (.+)$/i, (msg) ->
     name = msg.match[1]
     result = removeLunchMenu(name)
     msg.send "#{result}"
 
   new CronJob
-    cronTime:'0 * * * * 1-5'
+    cronTime:'0 0 13 * * 1-5'
     onTick: ->
       lunchMenus = getLunchMenus()
+      if 0 >= Object.keys(lunchMenus).length
+        return
       max = 0
       for name, rate of lunchMenus 
-        max += rate
+        rateNum = parseInt(rate, 10);
+        max = max + rateNum
       percentile = Math.floor(Math.random() * max)
       sum = 0
       for name, rate of lunchMenus 
-        sum += rate
+        rateNum = parseInt(rate, 10);
+        sum = sum + rateNum
         if sum >= percentile
-          robot.send {room: ''}, "today lunch is #{name}"
+          robot.send {room: '#general'}, "今日の昼飯は  #{name}"
           return
     start: true
