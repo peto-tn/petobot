@@ -55,10 +55,10 @@ module.exports = (robot) ->
         return "今日の昼飯は  #{name}"
 
   new CronJob
-    cronTime:'0 * * * * 1-5'
+    cronTime:'0 0 13 * * 1-5'
     onTick: ->
       result = drawLunchMenus()
-      robot.send {room: '#peto_test'}, result
+      robot.send {room: '#general'}, result
     start: true
 
   robot.hear /^draw lunch$/i, (msg) ->
