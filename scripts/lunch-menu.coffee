@@ -38,22 +38,29 @@ module.exports = (robot) ->
     result = removeLunchMenu(name)
     msg.send "#{result}"
 
+  drawLunchMenus = () ->
+    lunchMenus = getLunchMenus()
+    if 0 >= Object.keys(lunchMenus).length
+      return
+    max = 0
+    for name, rate of lunchMenus 
+      rateNum = parseInt(rate, 10);
+      max = max + rateNum
+    percentile = Math.floor(Math.random() * max)
+    sum = 0
+    for name, rate of lunchMenus 
+      rateNum = parseInt(rate, 10);
+      sum = sum + rateNum
+      if sum >= percentile
+        return "今日の昼飯は  #{name}"
+
   new CronJob
     cronTime:'0 0 13 * * 1-5'
     onTick: ->
-      lunchMenus = getLunchMenus()
-      if 0 >= Object.keys(lunchMenus).length
-        return
-      max = 0
-      for name, rate of lunchMenus 
-        rateNum = parseInt(rate, 10);
-        max = max + rateNum
-      percentile = Math.floor(Math.random() * max)
-      sum = 0
-      for name, rate of lunchMenus 
-        rateNum = parseInt(rate, 10);
-        sum = sum + rateNum
-        if sum >= percentile
-          robot.send {room: '#general'}, "今日の昼飯は  #{name}"
-          return
+      result = drawLunchMenus()
+      robot.send {room: '#general'}, result
     start: true
+
+  robot.hear /^draw lunch$/i, (msg) ->
+    result = drawLunchMenus()
+    msg.send "#{result}"
