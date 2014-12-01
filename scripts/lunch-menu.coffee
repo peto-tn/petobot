@@ -26,7 +26,7 @@ module.exports = (robot) ->
   
   robot.hear /^list lunch$/i, (msg) ->
     lunchMenus = getLunchMenus()
-    menus = '名前 初期weight 現在weight'
+    menus = '名前 初期weight 現在weight\n'
     for name, rate of lunchMenus 
       menus += "#{name}: #{rate[KEY_INIT_RATE]}, #{rate[KEY_CURRENT_RATE]}\n"
     msg.send menus
