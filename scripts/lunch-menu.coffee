@@ -26,7 +26,7 @@ module.exports = (robot) ->
   
   robot.hear /^list lunch$/i, (msg) ->
     lunchMenus = getLunchMenus()
-    menus = ''
+    menus = '名前 初期weight 現在weight'
     for name, rate of lunchMenus 
       menus += "#{name}: #{rate[KEY_INIT_RATE]}, #{rate[KEY_CURRENT_RATE]}\n"
     msg.send menus
@@ -133,6 +133,7 @@ module.exports = (robot) ->
 
   robot.hear /^reset vote lunch$/i, (msg) ->
     resetVoteLunch()
+    msg.send "reset votes!"
 
   resetVoteLunch = () ->
     robot.brain.set KEY_VOTE_LUNCH, {} 
