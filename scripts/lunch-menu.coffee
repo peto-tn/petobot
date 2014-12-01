@@ -112,7 +112,7 @@ module.exports = (robot) ->
         result[menu] = parseInt(result[menu], 10) + 1;
     return result
 
-  robot.hear /^vote list lunch$/i, (msg) ->
+  robot.hear /^vote lunch list$/i, (msg) ->
     voteLunchResult = getVoteLunchResult()
     message = '投票状況\n'
     for menu, point of voteLunchResult 
