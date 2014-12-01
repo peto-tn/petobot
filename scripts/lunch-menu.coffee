@@ -112,7 +112,7 @@ module.exports = (robot) ->
         result[menu] = parseInt(result[menu], 10) + 1;
     return result
 
-  robot.hear /^vote lunchlist$/i, (msg) ->
+  robot.hear /^list vote lunch$/i, (msg) ->
     voteLunchResult = getVoteLunchResult()
     message = '投票状況\n'
     for menu, point of voteLunchResult 
@@ -131,7 +131,10 @@ module.exports = (robot) ->
     robot.brain.set KEY_VOTE_LUNCH, voteLunch 
     msg.send "#{user} さんが #{menu} に１票"
 
-  resultVoteLunch = () ->
+  robot.hear /^reset vote lunch$/i, (msg) ->
+    resetVoteLunch()
+
+  resetVoteLunch = () ->
     robot.brain.set KEY_VOTE_LUNCH, {} 
 
   totalVoteLunch = () ->
@@ -159,7 +162,7 @@ module.exports = (robot) ->
       result = ''
       if checkVote()
         result = totalVoteLunch()
-        resultVoteLunch()
+        resetVoteLunch()
       else
         result = drawLunchMenus()
       robot.send {room: '#general'}, result
