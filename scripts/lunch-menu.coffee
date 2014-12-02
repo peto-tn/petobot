@@ -11,6 +11,9 @@ module.exports = (robot) ->
 
   setLunchMenu = (name, initRate, currentRate) =>
     lunchMenus = getLunchMenus()
+    rate = {}
+    rate[KEY_CURRENT_RATE] = currentRate
+    rate[KEY_INIT_RATE] = initRate
     lunchMenus[name] = rate
     robot.brain.set KEY_LUNCH_MENU,lunchMenus 
     return "add: #{name}:#{initRate}, #{currentRate}"
