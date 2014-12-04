@@ -34,13 +34,13 @@ module.exports = (robot) ->
       menus += "#{name}: #{rate[KEY_INIT_RATE]}, #{rate[KEY_CURRENT_RATE]}\n"
     msg.send menus
 
-  robot.hear /^set lunch (.+) ([0-9]+)$/i, (msg) ->
+  robot.hear /^set lunch[ ]+(.+)[ ]+([0-9]+)$/i, (msg) ->
     name = msg.match[1]
     rate = msg.match[2]
     result = setLunchMenu(name, rate, rate)
     msg.send "#{result}"
 
-  robot.hear /^set lunch (.+) ([0-9]+) ([0-9]+)$/i, (msg) ->
+  robot.hear /^set lunch[ ]+(.+)[ ]+([0-9]+)[ ]+([0-9]+)$/i, (msg) ->
     name = msg.match[1]
     initRate = msg.match[2]
     currentRate = msg.match[3]
@@ -49,6 +49,11 @@ module.exports = (robot) ->
 
   robot.hear /^rm lunch (.+)$/i, (msg) ->
     name = msg.match[1]
+    result = removeLunchMenu(name)
+    msg.send "#{result}" 
+
+  robot.hear /^rm space lunch (.+)$/i, (msg) ->
+    name = msg.match[1] + " "
     result = removeLunchMenu(name)
     msg.send "#{result}" 
 
@@ -172,12 +177,12 @@ module.exports = (robot) ->
       robot.send {room: '#general'}, result
     start: true
 
-  new CronJob
-    cronTime:'0 0 10 * * 1-5'
-    onTick: ->
-      message = 'メニューに投票してね。なければ天のお告げでランチメニューが決まります\n'
-      lunchMenus = getLunchMenus()
-      for name, rate of lunchMenus 
-        message += "#{name}\n"
-      robot.send {room: '#general'}, message
-    start: true
+#  new CronJob
+#    cronTime:'0 0 10 * * 1-5'
+#    onTick: ->
+#      message = 'メニューに投票してね。なければ天のお告げでランチメニューが決まります\n'
+#      lunchMenus = getLunchMenus()
+#      for name, rate of lunchMenus 
+#        message += "#{name}\n"
+#      robot.send {room: '#general'}, message
+#    start: true
