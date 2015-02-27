@@ -165,17 +165,17 @@ module.exports = (robot) ->
     voteLunch = getVoteLunch()
     return 0 < Object.keys(voteLunch).length
 
-#  new CronJob
-#    cronTime:'0 0 13 * * 1-5'
-#    onTick: ->
-#      result = ''
-#      if checkVote()
-#        result = totalVoteLunch()
-#        resetVoteLunch()
-#      else
-#        result = drawLunchMenus()
-#      robot.send {room: '#general'}, result
-#    start: true
+  new CronJob
+    cronTime:'0 0 13 * * 1-5'
+    onTick: ->
+      result = ''
+      if checkVote()
+        result = totalVoteLunch()
+        resetVoteLunch()
+      else
+        result = drawLunchMenus()
+      robot.send {room: '#general'}, result
+    start: true
 
 #  new CronJob
 #    cronTime:'0 0 10 * * 1-5'

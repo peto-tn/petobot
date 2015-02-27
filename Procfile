@@ -1,1 +1,1 @@
-web: bin/hubot --adapter chatwork
+web: bin/hubot --adapter slack
